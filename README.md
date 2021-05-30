@@ -2,7 +2,7 @@
 Client SDK Library for Kirimwa.cloud Server Application
 
 ## Requirements
-- PHP 7.2.5+
+- PHP 5.6+
 - PHP JSON Extension
 - [Guzzle, PHP HTTP Client](https://github.com/guzzle/guzzle)
 
