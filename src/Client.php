@@ -106,32 +106,20 @@ class Client
 		}
 
 		if( !empty($senderNumber) && isset(Config::$senders["$senderNumber"]) ) {
-			$this->sender = Config::$senders["$senderNumber"];
+			$this->sender = array_merge(['number' => $senderNumber], Config::$senders["$senderNumber"]);
 		}
 		elseif( empty($senderNumber) || $randomIfNotExists === true ) {
 			$keys = array_keys(Config::$senders);
-
 			if( count($keys) > 1 ) {
-
+				$currentNumber = !empty($this->sender) ? $this->sender['number'] : null;
+				$keys = array_filter($keys, function($n) use ($currentNumber) {
+					return $n !== $currentNumber;
+				});
 				shuffle($keys);
-
-				if( !empty($this->sender) ) {
-
-					// make sure new selected sender is different from current sender
-					foreach( $keys as $k ) {
-						if( $k != $this->sender['number'] ) {
-							$key = $k;
-							break;
-						}
-					}
-				}
-				else {
-					$key = $keys[0];
-				}
-			}
-			else {
 				$key = $keys[0];
 			}
+
+			$key = $keys[0];
 
 			$this->sender = array_merge(['number' => $key], Config::$senders[$key]);
 		}
@@ -166,7 +154,7 @@ class Client
      * 
      * @param string $message Message to be sent
      *
-     * @return boolean true|false
+     * @return boolean ZerosDev\KirimWA\Client
      */
 	public function sendText(string $phone, string $message)
 	{
