@@ -63,6 +63,19 @@ class Client
 
 
 	/**
+     * Use inline configuration
+     */
+	public function useConfig(array $config = [])
+	{
+		Config::apply($config);
+
+		$this->useSender();
+
+		return $this;
+	}
+
+
+	/**
      * Initialize/re-initialize Guzzle HTTP Client instance & property
      */
 	private function init()
